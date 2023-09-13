@@ -5,7 +5,6 @@ const session = require("express-session");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const colors = require("colors");
 
-
 require("dotenv").config();
 
 // Configure session middleware for Express

@@ -1,1 +1,1 @@
-# global-mart-e-commerce
+<h1 align="center">Welcome to Globalmart App</h1>
