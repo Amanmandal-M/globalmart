@@ -57,7 +57,6 @@ package-lock.json
 
 # Ignore editor config and markdown files
 .editorconfig
-*.md
 
 # Windows thumbnail cache files
 Thumbs.db
