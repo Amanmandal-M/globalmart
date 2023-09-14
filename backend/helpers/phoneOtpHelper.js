@@ -1,4 +1,4 @@
-module.exports.generateOTP2 = () => {
+module.exports.generateOTPforPhone = () => {
     const digits = "0123456789";
     let otp = "";
   
