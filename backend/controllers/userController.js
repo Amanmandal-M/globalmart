@@ -101,13 +101,13 @@ exports.loginUser = async (req, res) => {
 
     // Generating Normal Token Here
     const normalToken = jwt.sign({ userId: user._id }, SECRET_KEY, {
-      expiresIn: "24h",
+      expiresIn: "7d",
     });
     jwt_normal_token = normalToken;
 
     // Generating Refresh Token Here
     const refreshToken = jwt.sign({ userId: user._id }, SECRET_KEY, {
-      expiresIn: "24h",
+      expiresIn: "24d",
     });
     jwt_refresh_token = refreshToken;
 
