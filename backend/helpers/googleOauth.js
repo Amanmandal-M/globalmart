@@ -5,6 +5,9 @@ const session = require("express-session");
 const GoogleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const colors = require("colors");
 
+// Model Location
+const { userModel } = require("../models/userModel");
+
 require("dotenv").config();
 
 // Configure session middleware for Express
@@ -53,17 +56,16 @@ async function saveDataOfUser({
 }) {
   try {
     // Check if the user already exists in the database
-    const isPresent = await userModel.aggregate([{ $match: { emails } }]);
-    if (isPresent.length < 0) {
+    const isPresent = await userModel.findOne({ email: emails });
+    if (isPresent) {
       console.log(isPresent);
     } else {
       // Create a new user document and save it to the database
       const data = new userModel({
         GoogleId: id,
-        Name: displayName,
-        Email: emails[0].value,
-        ProfileUrl: photos[0].value,
-        isVerifiedEmail: emails[0].verified,
+        name: displayName,
+        email: emails[0].value,
+        imageUrl: photos[0].value,
       });
       await data.save();
     }
@@ -86,12 +88,11 @@ googleOauth.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   async (req, res) => {
     // Redirect user after successful authentication
-    const data = await userModel.find();
-    res
-      .status(200)
-      .json(
-        "Email is Verified ... This is for Checking Only ... If this is coming here it means all the things are working fine"
-      );
+    return res.status(200).json({
+      status: 200,
+      success: true,
+      message: "Authenticated successfully",
+    });
   }
 );
 
