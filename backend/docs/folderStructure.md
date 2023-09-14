@@ -4,6 +4,7 @@
 ├── server.js
 ├── configs
 |    └── db.js
+|    └── swaggerconfig.js
 ├── models
 |    └── userModel.js
 |    └── productModel.js
