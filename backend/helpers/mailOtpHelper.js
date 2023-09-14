@@ -1,4 +1,4 @@
-module.exports.generateOTP = () => {
+module.exports.generateOTPforMail = () => {
   const digits = "0123456789";
   let otp = "";
 
