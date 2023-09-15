@@ -1,4 +1,5 @@
 import React from 'react'
+import { BsCart4 } from "react-icons/bs";
 import {
     Box,
     Flex,
@@ -21,12 +22,14 @@ import {
     ChevronDownIcon,
     ChevronRightIcon,
   } from '@chakra-ui/icons'
+ 
 
 export default function Navbar() {
     const { isOpen, onToggle } = useDisclosure()
 
     return (
       <Box>
+         
         <Flex
           bg={useColorModeValue('white', 'gray.800')}
           color={useColorModeValue('gray.600', 'white')}
@@ -66,9 +69,7 @@ export default function Navbar() {
             justify={'flex-end'}
             direction={'row'}
             spacing={6}>
-            <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
-              Sign In
-            </Button>
+         
             <Button
               as={'a'}
               display={{ base: 'none', md: 'inline-flex' }}
@@ -80,14 +81,17 @@ export default function Navbar() {
               _hover={{
                 bg: 'pink.300',
               }}>
-              Sign Up
+              Sign In
             </Button>
+            <BsCart4 size={35} cursor={"pointer"}/>
           </Stack>
         </Flex>
   
         <Collapse in={isOpen} animateOpacity>
           <MobileNav />
         </Collapse>
+    
+     
       </Box>
     )
 }
@@ -237,41 +241,34 @@ const DesktopNav = () => {
   
   const NAV_ITEMS = [
     {
-      label: 'Inspiration',
+      label: 'Product',
       children: [
         {
-          label: 'Explore Design Work',
+          label: 'Shirts',
           subLabel: 'Trending Design to inspire you',
           href: '#',
         },
         {
-          label: 'New & Noteworthy',
+          label: 'Jeans',
           subLabel: 'Up-and-coming Designers',
           href: '#',
         },
       ],
     },
     {
-      label: 'Find Work',
+      label: 'New Collections',
       children: [
         {
-          label: 'Job Board',
-          subLabel: 'Find your dream design job',
+          label: 'Jewellery',
+          subLabel: 'Find your dream design',
           href: '#',
         },
         {
-          label: 'Freelance Projects',
-          subLabel: 'An exclusive list for contract work',
+          label: 'Shoes',
+          subLabel: 'An exclusive list for shoes design',
           href: '#',
         },
       ],
     },
-    {
-      label: 'Learn Design',
-      href: '#',
-    },
-    {
-      label: 'Hire Designers',
-      href: '#',
-    },
+    
   ]
