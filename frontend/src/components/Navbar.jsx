@@ -31,7 +31,7 @@ export default function Navbar() {
       <Box>
          
         <Flex
-          bg={useColorModeValue('white', 'gray.800')}
+          bg={useColorModeValue('whitesmoke', 'gray.800')}
           color={useColorModeValue('gray.600', 'white')}
           minH={'60px'}
           py={{ base: 2 }}
@@ -76,10 +76,10 @@ export default function Navbar() {
               fontSize={'sm'}
               fontWeight={600}
               color={'white'}
-              bg={'pink.400'}
+              bg={'#2f855a'}
               href={'#'}
               _hover={{
-                bg: 'pink.300',
+                bg: '2f855a',
               }}>
               Sign In
             </Button>
@@ -158,7 +158,7 @@ const DesktopNav = () => {
           <Box>
             <Text
               transition={'all .3s ease'}
-              _groupHover={{ color: 'pink.400' }}
+              _groupHover={{ color: '2f855a' }}
               fontWeight={500}>
               {label}
             </Text>
@@ -172,7 +172,7 @@ const DesktopNav = () => {
             justify={'flex-end'}
             align={'center'}
             flex={1}>
-            <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
+            <Icon color={'2f855a'} w={5} h={5} as={ChevronRightIcon} />
           </Flex>
         </Stack>
       </Box>
