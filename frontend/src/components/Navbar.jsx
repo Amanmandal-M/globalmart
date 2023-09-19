@@ -1,5 +1,6 @@
 import React from 'react'
 import { BsCart4 } from "react-icons/bs";
+import { Link } from "react-router-dom"
 import {
     Box,
     Flex,
@@ -28,8 +29,7 @@ export default function Navbar() {
     const { isOpen, onToggle } = useDisclosure()
 
     return (
-      <Box>
-         
+      <Box> 
         <Flex
           bg={useColorModeValue('whitesmoke', 'gray.800')}
           color={useColorModeValue('gray.600', 'white')}
@@ -56,7 +56,7 @@ export default function Navbar() {
               textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
               fontFamily={'heading'}
               color={useColorModeValue('gray.800', 'white')}>
-              Logo
+              GMart
             </Text>
   
             <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -81,7 +81,8 @@ export default function Navbar() {
               _hover={{
                 bg: '2f855a',
               }}>
-              Sign In
+                <Link to="/login">Sign In</Link>
+              
             </Button>
             <BsCart4 size={35} cursor={"pointer"}/>
           </Stack>
