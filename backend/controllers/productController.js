@@ -1,21 +1,8 @@
+const { successResponse, errorResponse } = require("../helpers/successAndError");
+const Category = require("../models/categoryModel");
 const { Product } = require("../models/productModel");
 
-const errorResponse = (status, message) => {
-    return {
-        status,
-        success: false,
-        message,
-    }
-}
-const successResponse = (statusCode, message, data) => {
-    return {
-        statusCode,
-        success: true,
-        message,
-        data
-    }
 
-}
 
 exports.getAllProducts = async (req, res) => {
     try {
@@ -34,83 +21,91 @@ exports.getProductById = async (req, res) => {
         if (!product) {
             return res.status(404).json(errorResponse(404, "Product not found"));
         }
-        res.status(200).json(successResponse(200, "Retrieved all products successfully"));
+        res.status(200).json(successResponse(200, "Retrieved product by Id successfully",product));
     } catch (error) {
         console.error('Error fetching product by ID:'.red, error);
         res.status(500).json(errorResponse(500, 'Error fetching product by ID:'));
     }
 };
 
-// exports.createProduct = async (req, res) => {
-//     const { title, thumbnail,categoryId, description, price, category } = req.body;
-//     try {
-//         const newProduct = new Product({
-//             name,
-//             description,
-//             price,
-//             category,
-//         });
-//         await newProduct.save();
-//         res.status(201).json(successResponse(201, "Product created successfully", newProduct));
-//     } catch (error) {
-//         console.error('Error creating product:', error);
-//         res.status(500).json(errorResponse(500, 'Internal Server Error'));
-//     }
-// };
+exports.createProduct = async (req, res) => {
+    const { title, thumbnail,imageUrls,price,category,description } = req.body;
+    try {
+        const existingCategory = await Category.findOne({name:category});
+        
+        if (!existingCategory) {
+            return res.status(400).json(successResponse(400,'Category does not exist'));
+        }
+
+        const newProduct = new Product({
+            title,
+            thumbnail,
+            imageUrls,
+            price,
+            categoryId:existingCategory._id,
+            description,
+        });
+        await newProduct.save();
+        res.status(201).json(successResponse(201, "Product created successfully", newProduct));
+    } catch (error) {
+        console.error('Error creating product:', error);
+        res.status(500).json(errorResponse(500, 'Internal Server Error'));
+    }
+};
 
 
-// exports.updateProduct = async (req, res) => {
-//     const productId = req.params.id;
-//     const updatedProductData = req.body;
-//     try {
-//         const updatedProduct = await Product.findByIdAndUpdate(productId, updatedProductData, { new: true });
-//         if (!updatedProduct) {
-//             return res.status(404).json(errorResponse(404, 'Product not found'));
-//         }
-//         res.json(successResponse(updatedProduct));
-//     } catch (error) {
-//         console.error('Error updating product:', error);
-//         res.status(500).json(errorResponse(500, 'Internal Server Error'));
-//     }
-// };
+exports.updateProduct = async (req, res) => {
+    const productId = req.params.id;
+    const updatedProductData = req.body;
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(productId, updatedProductData, { new: true });
+        if (!updatedProduct) {
+            return res.status(404).json(errorResponse(404, 'Product not found'));
+        }
+        res.status(200).json(successResponse(200,"Product updated successfully",updatedProduct));
+    } catch (error) {
+        console.error('Error updating product:'.red, error);
+        res.status(500).json(errorResponse(500, 'Internal Server Error'));
+    }
+};
 
-// exports.deleteProduct = async (req, res) => {
-//     const productId = req.params.id;
-//     try {
-//         const deletedProduct = await Product.findByIdAndRemove(productId);
-//         if (!deletedProduct) {
-//             return res.status(404).json(errorResponse(404, 'Product not found'));
-//         }
-//         res.json(successResponse(deletedProduct));
-//     } catch (error) {
-//         console.error('Error deleting product:', error);
-//         res.status(500).json(errorResponse(500, 'Internal Server Error'));
-//     }
-// };
+exports.deleteProduct = async (req, res) => {
+    const productId = req.params.id;
+    try {
+        const deletedProduct = await Product.findByIdAndRemove(productId);
+        if (!deletedProduct) {
+            return res.status(404).json(errorResponse(404, 'Product not found'));
+        }
+        res.status(200).json(successResponse(200,"Product deleted successfully",deletedProduct));
+    } catch (error) {
+        console.error('Error deleting product:'.red, error);
+        res.status(500).json(errorResponse(500, 'Internal Server Error'));
+    }
+};
 
-// exports.getProductsByCategory = async (req, res) => {
-//     const category = req.query.search;
-//     try {
-//         const products = await Product.find({ category });
-//         res.json(successResponse(products));
-//     } catch (error) {
-//         console.error('Error fetching products by category:', error);
-//         res.status(500).json(errorResponse(500, 'Internal Server Error'));
-//     }
-// };
+exports.getProductsByCategoryId = async (req, res) => {
+    const categoryId = req.params.id;
+    try {
+        const products = await Product.find({ categoryId });
+        res.status(200).json(successResponse(200,"GET products by Category ID successfully",products));
+    } catch (error) {
+        console.error('Error fetching products by category:', error);
+        res.status(500).json(errorResponse(500, 'Internal Server Error'));
+    }
+};
 
-// exports.paginateProducts = async (req, res) => {
-//     const { page, limit } = req.query;
-//     const startIndex = (page - 1) * limit;
-//     const endIndex = startIndex + parseInt(limit);
-//     try {
-//         const paginatedProducts = await Product.find().skip(startIndex).limit(parseInt(limit));
-//         res.json(successResponse(paginatedProducts));
-//     } catch (error) {
-//         console.error('Error paginating products:', error);
-//         res.status(500).json(errorResponse(500, 'Internal Server Error'));
-//     }
-// };
+exports.paginateProducts = async (req, res) => {
+    const { page, limit } = req.query;
+    const startIndex = (parseInt(page) - 1) * parseInt(limit);
+    const endIndex = startIndex + parseInt(limit);
+    try {
+        const paginatedProducts = await Product.find().skip(startIndex).limit(parseInt(limit));
+        res.json(successResponse(paginatedProducts));
+    } catch (error) {
+        console.error('Error paginating products:', error);
+        res.status(500).json(errorResponse(500, 'Internal Server Error'));
+    }
+};
 
 // exports.searchProducts = async (req, res) => {
 //     const { search } = req.query;

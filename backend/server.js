@@ -16,7 +16,7 @@ const { connectToDatabase } = require("./configs/db");
 const userRouter = require("./routes/userRoute");
 const otpRouter = require("./routes/checkOtpRoute");
 const productRouter = require("./routes/productRoute");
-// const categoryRouter = require("./routes/categoryRoute");
+const categoryRouter = require("./routes/categoryRoute");
 // const cartRouter = require("./routes/cartRoute");
 // const orderRouter = require("./routes/orderRoute");
 
@@ -44,7 +44,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", userRouter);
 app.use("/api/check", otpRouter);
 app.use("/api/products", productRouter);
-// app.use("/api/categories", categoryRouter);
+app.use("/api/categories", categoryRouter);
 
 // Middleware for token authentication (applies to the routes below)
 // app.use(authenticateToken);

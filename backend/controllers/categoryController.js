@@ -1,13 +1,13 @@
-// categoryController.js
-const Category = require('../models/categoryModel');
+const { successResponse, errorResponse } = require("../helpers/successAndError");
+const Category = require("../models/categoryModel");
 
 // GET all categories
 exports.getAllCategories = async (req, res) => {
   try {
     const categories = await Category.find();
-    res.status(200).json(categories);
+    res.status(200).json(successResponse(200, "Category retrived successfully",categories));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json(errorResponse(500, error.message));
   }
 };
 
@@ -16,7 +16,7 @@ exports.getCategoryById = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
     if (!category) {
-      return res.status(404).json({ message: 'Category not found' });
+      return res.status(404).json(errorResponse(404, 'Category not found'));
     }
     res.status(200).json(category);
   } catch (error) {
@@ -27,11 +27,12 @@ exports.getCategoryById = async (req, res) => {
 // POST a new category
 exports.createCategory = async (req, res) => {
   try {
-    const category = new Category(req.body);
+    const { name, description } = req.body
+    const category = new Category({ name, description });
     const savedCategory = await category.save();
-    res.status(201).json(savedCategory);
+    res.status(201).json(successResponse(201, "New Category created successfuldy", savedCategory));
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json(errorResponse(400,error.message));
   }
 };
 
